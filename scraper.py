@@ -123,7 +123,7 @@ def _build_email_html(offres: list[dict]) -> str:
 
     return f"""<!DOCTYPE html>
 <html><head><meta charset="utf-8"></head><body style="margin:0;padding:0;background-color:#f0f2f5;">
-<div style="max-width:800px;margin:0 auto;padding:24px 16px;font-family:'Segoe UI',Arial,sans-serif;">
+<div style="max-width:1420px;margin:0 auto;padding:24px 16px;font-family:'Segoe UI',Arial,sans-serif;">
     <h2 style="color:#1a1a2e;font-size:20px;margin:0 0 16px 0;">
         {len(offres)} nouvelle(s) offre(s) trouvée(s)
     </h2>
