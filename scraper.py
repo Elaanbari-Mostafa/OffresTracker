@@ -113,12 +113,12 @@ def _build_email_html(offres: list[dict]) -> str:
     thead = "".join(f"<th style='padding:10px 8px;text-align:left;font-size:13px;'>{label}</th>" for label, _ in COLUMNS)
     trows = ""
     for o in offres:
-        cells = "".join(
-            f"<td style='padding:8px;font-size:13px;border-bottom:1px solid #e0e0e0;'>"
-            f"{'<a href=\"' + o['url'] + '\" style=\"color:#1a73e8;text-decoration:none;font-weight:600;\">' + o['titre'] + '</a>' if key == 'titre' else o.get(key, '')}"
-            f"</td>"
-            for _, key in COLUMNS
-        )
+        cells = ""
+        for _, key in COLUMNS:
+            val = o.get(key, "")
+            if key == "titre":
+                val = f'<a href="{o["url"]}" style="color:#1a73e8;text-decoration:none;font-weight:600;">{val}</a>'
+            cells += f"<td style='padding:8px;font-size:13px;border-bottom:1px solid #e0e0e0;'>{val}</td>"
         trows += f"<tr>{cells}</tr>"
 
     return f"""<!DOCTYPE html>
