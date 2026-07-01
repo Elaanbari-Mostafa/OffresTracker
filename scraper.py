@@ -99,41 +99,40 @@ def filtrer_et_sauvegarder(offres):
     print("Nouvelles offres pertinentes trouvées :", len(nouvelles_offres_pertinentes))
     return nouvelles_offres_pertinentes
 
-def _build_offre_html(offre: dict) -> str:
-    fields = [
-        ("ID", "id"),
-        ("Titre", "titre"),
-        ("Administration", "administration"),
-        ("Grade", "grade"),
-        ("Spécialité", "specialite"),
-        ("Code du concours", "code_concours"),
-        ("Limite de dépôt", "limite_depot"),
-    ]
-    rows = "".join(
-        f"<tr><td style='padding:4px 12px 4px 0;font-weight:600;white-space:nowrap;vertical-align:top;'>{label}:</td>"
-        f"<td style='padding:4px 0;vertical-align:top;'>{offre.get(key, '')}</td></tr>"
-        for label, key in fields
-    )
-    return f"""
-    <table style="width:100%;border-collapse:collapse;margin-bottom:20px;border:1px solid #ddd;border-radius:6px;font-family:Arial,sans-serif;font-size:14px;">
-        <tr><td style="padding:12px;background-color:#f8f9fa;border-bottom:1px solid #ddd;">
-            <a href="{offre['url']}" style="font-size:16px;font-weight:700;color:#1a73e8;text-decoration:none;">{offre['titre']}</a>
-        </td></tr>
-        <tr><td style="padding:12px;">
-            <table style="width:100%;border-collapse:collapse;">{rows}</table>
-        </td></tr>
-    </table>"""
+COLUMNS = [
+    ("Titre", "titre"),
+    ("Administration", "administration"),
+    ("Grade", "grade"),
+    ("Spécialité", "specialite"),
+    ("Code", "code_concours"),
+    ("Limite", "limite_depot"),
+]
 
 
 def _build_email_html(offres: list[dict]) -> str:
-    offres_html = "".join(_build_offre_html(o) for o in offres)
+    thead = "".join(f"<th style='padding:10px 8px;text-align:left;font-size:13px;'>{label}</th>" for label, _ in COLUMNS)
+    trows = ""
+    for o in offres:
+        cells = "".join(
+            f"<td style='padding:8px;font-size:13px;border-bottom:1px solid #e0e0e0;'>"
+            f"{'<a href=\"' + o['url'] + '\" style=\"color:#1a73e8;text-decoration:none;font-weight:600;\">' + o['titre'] + '</a>' if key == 'titre' else o.get(key, '')}"
+            f"</td>"
+            for _, key in COLUMNS
+        )
+        trows += f"<tr>{cells}</tr>"
+
     return f"""<!DOCTYPE html>
-<html><head><meta charset="utf-8"></head><body style="margin:0;padding:0;background-color:#f4f4f4;">
-<div style="max-width:640px;margin:0 auto;padding:20px;font-family:Arial,sans-serif;">
-    <h2 style="color:#333;">Nouvelles offres correspondant à vos critères</h2>
-    {offres_html}
-    <p style="color:#888;font-size:12px;text-align:center;margin-top:20px;">
-        OffresTracker &mdash; Scraping automatique
+<html><head><meta charset="utf-8"></head><body style="margin:0;padding:0;background-color:#f0f2f5;">
+<div style="max-width:800px;margin:0 auto;padding:24px 16px;font-family:'Segoe UI',Arial,sans-serif;">
+    <h2 style="color:#1a1a2e;font-size:20px;margin:0 0 16px 0;">
+        {len(offres)} nouvelle(s) offre(s) trouvée(s)
+    </h2>
+    <table style="width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.08);">
+        <thead><tr style="background:#1a1a2e;color:#fff;">{thead}</tr></thead>
+        <tbody>{trows}</tbody>
+    </table>
+    <p style="color:#999;font-size:11px;text-align:center;margin-top:20px;">
+        OffresTracker &mdash; Scraping automatique emploi-public.ma
     </p>
 </div></body></html>"""
 
