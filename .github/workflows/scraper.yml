@@ -2,7 +2,7 @@ name: Job Scraper Automatique
 
 on:
   schedule:
-    - cron: '0 * * * *' # S'exécute à la minute 0 de chaque heure
+    - cron: '0 8 * * *' # S'exécute à la minute 0 de chaque jours
   workflow_dispatch: # Permet de lancer le script manuellement depuis GitHub pour tester
 
 jobs:
