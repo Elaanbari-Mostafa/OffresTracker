@@ -5,8 +5,8 @@ from emailService import envoyer_email
 
 MOTS_CLES = [
     "dotnet", ".net", "exploitation", "production", "génie logiciel", "développeur",
-    "ingénieur", "informatique", "data", "analyste", "python", "java", "c#", "javascript",
-    "fullstack", "développement", "web", "mobile", "backend", "frontend", "cloud", "devops",
+    "informatique", "data", "analyste", "python", "java", "c#", "javascript",
+    "fullstack", "développement", "web", "backend", "frontend", "cloud", "devops",
     "sql", "nosql",
 ]
 
