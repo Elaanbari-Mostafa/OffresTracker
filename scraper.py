@@ -81,24 +81,25 @@ def scraper_site():
 
 def filtrer_et_sauvegarder(offres):
     nouvelles_offres_pertinentes = []
+    try:
+        for offre in offres:
+            result = supabase.table("offres_emploi").select("id").eq("id", offre["id"]).execute()
 
-    for offre in offres:
-        result = supabase.table("offres_emploi").select("id").eq("id", offre["id"]).execute()
-
-        if len(result.data) == 0:
-            offre_to_db = {
-                "id": offre["id"],
-                "titre": offre["titre"],
-                "url": offre["url"],
-                "limite_depot": offre["limite_depot"],
-                "administration": offre["administration"],
-                "grade": offre["grade"],
-                "code_concours": offre["code_concours"],
-                "specialite": offre["specialite"],
-            }
-            supabase.table("offres_emploi").insert(offre_to_db).execute()
-            nouvelles_offres_pertinentes.append(offre)
-
+            if len(result.data) == 0:
+                offre_to_db = {
+                    "id": offre["id"],
+                    "titre": offre["titre"],
+                    "url": offre["url"],
+                    "limite_depot": offre["limite_depot"],
+                    "administration": offre["administration"],
+                    "grade": offre["grade"],
+                    "code_concours": offre["code_concours"],
+                    "specialite": offre["specialite"],
+                }
+                supabase.table("offres_emploi").insert(offre_to_db).execute()
+                nouvelles_offres_pertinentes.append(offre)
+    except Exception as e:
+        print(f"Erreur lors de la sauvegarde des offres : {e}")
     return nouvelles_offres_pertinentes
 
 
